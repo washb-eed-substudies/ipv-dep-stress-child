@@ -1,7 +1,7 @@
 rm(list=ls())
 
-source(here::here("ipv-stress/0-config.R"))
-source(here::here("ipv-stress/src/0-gam-functions.R"))
+source(here::here("0-config.R"))
+source(here::here("src/0-gam-functions.R"))
 
 d <- read.csv(paste0(dropboxDir,"Data/Cleaned/Audrie/bangladesh-dm-ee-ipv-cesd-pss-covariates-stresslab.csv"))
 
@@ -87,17 +87,17 @@ for(i in 1:nrow(H1_adj_models)){
 
 
 #Save models
-saveRDS(H1_adj_models, here("ipv-stress/models/H1_adj_models.RDS"))
+saveRDS(H1_adj_models, here("models/H1_adj_models.RDS"))
 
 #Save results
-saveRDS(H1_adj_res, here("ipv-stress/results/adjusted/H1_adj_res.RDS"))
+saveRDS(H1_adj_res, here("results/adjusted/H1_adj_res.RDS"))
 
 
 #Save plots
 #saveRDS(H1_adj_plot_list, paste0(dropboxDir,"results/stress-growth-models/figure-objects/H1_adj_splines.RDS"))
 
 #Save plot data
-saveRDS(H1_adj_plot_data, here("ipv-stress/figure-data/H1_adj_spline_data.RDS"))
+saveRDS(H1_adj_plot_data, here("figure-data/H1_adj_spline_data.RDS"))
 
 
 
@@ -141,17 +141,17 @@ for(i in 1:nrow(H2_adj_models)){
 
 
 #Save models
-saveRDS(H2_adj_models, here("ipv-stress/models/H2_adj_models.RDS"))
+saveRDS(H2_adj_models, here("models/H2_adj_models.RDS"))
 
 #Save results
-saveRDS(H2_adj_res, here("ipv-stress/results/adjusted/H2_adj_res.RDS"))
+saveRDS(H2_adj_res, here("results/adjusted/H2_adj_res.RDS"))
 
 
 #Save plots
 #saveRDS(H2_adj_plot_list, paste0(dropboxDir,"results/stress-growth-models/figure-objects/H2_adj_splines.RDS"))
 
 #Save plot data
-saveRDS(H2_adj_plot_data, here("ipv-stress/figure-data/H2_adj_splint_data.RDS"))
+saveRDS(H2_adj_plot_data, here("figure-data/H2_adj_splint_data.RDS"))
 
 
 
@@ -213,15 +213,15 @@ for(i in 1:nrow(H3_adj_models)){
 
 
 #Save models
-saveRDS(H3_adj_models, here("ipv-stress/models/H3_adj_models.RDS"))
+saveRDS(H3_adj_models, here("models/H3_adj_models.RDS"))
 
 #Save results
-saveRDS(H3_adj_res, here("ipv-stress/results/adjusted/H3_adj_res.RDS"))
+saveRDS(H3_adj_res, here("results/adjusted/H3_adj_res.RDS"))
 
 
 #Save plots
 #saveRDS(H3_adj_plot_list, paste0(dropboxDir,"results/stress-growth-models/figure-objects/H3_adj_splines.RDS"))
 
 #Save plot data
-saveRDS(H3_adj_plot_data, here("ipv-stress/figure-data/H3_adj_spline_data.RDS"))
+saveRDS(H3_adj_plot_data, here("figure-data/H3_adj_spline_data.RDS"))
 

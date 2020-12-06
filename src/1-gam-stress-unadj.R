@@ -1,7 +1,7 @@
 rm(list=ls())
 
-source(here::here("ipv-stress/0-config.R"))
-source(here::here("ipv-stress/src/0-gam-functions.R"))
+source(here::here("0-config.R"))
+source(here::here("src/0-gam-functions.R"))
 
 d <- read.csv(paste0(dropboxDir,"Data/Cleaned/Audrie/bangladesh-dm-ee-ipv-cesd-pss-covariates-stresslab.csv"))
 names(d)
@@ -46,17 +46,17 @@ for(i in 1:nrow(H1_models)){
 
 
 #Save models
-saveRDS(H1_models, here("ipv-stress/models/H1_models.RDS"))
+saveRDS(H1_models, here("models/H1_models.RDS"))
 
 #Save results
-saveRDS(H1_res, here("ipv-stress/results/unadjusted/H1_res.RDS"))
+saveRDS(H1_res, here("results/unadjusted/H1_res.RDS"))
 
 
 #Save plots
 #saveRDS(H1_plot_list, here("figure-objects/H1_unadj_splines.RDS"))
 
 #Save plot data
-saveRDS(H1_plot_data, here("ipv-stress/figure-data/H1_unadj_spline_data.RDS"))
+saveRDS(H1_plot_data, here("figure-data/H1_unadj_spline_data.RDS"))
 
 
 
@@ -98,17 +98,17 @@ for(i in 1:nrow(H2_models)){
 
 
 #Save models
-saveRDS(H2_models, here("ipv-stress/models/H2_models.RDS"))
+saveRDS(H2_models, here("models/H2_models.RDS"))
 
 #Save results
-saveRDS(H2_res, here("ipv-stress/results/unadjusted/H2_res.RDS"))
+saveRDS(H2_res, here("results/unadjusted/H2_res.RDS"))
 
 
 #Save plots
 #saveRDS(H2_plot_list, here("figure-objects/H2_unadj_splines.RDS"))
 
 #Save plot data
-saveRDS(H2_plot_data, here("ipv-stress/figure-data/H2_unadj_spline_data.RDS"))
+saveRDS(H2_plot_data, here("figure-data/H2_unadj_spline_data.RDS"))
 
 
 
@@ -165,15 +165,15 @@ for(i in 1:nrow(H3_models)){
 
 
 #Save models
-saveRDS(H3_models, here("ipv-stress/models/H3_models.RDS"))
+saveRDS(H3_models, here("models/H3_models.RDS"))
 
 #Save results
-saveRDS(H3_res, here("ipv-stress/results/unadjusted/H3_res.RDS"))
+saveRDS(H3_res, here("results/unadjusted/H3_res.RDS"))
 
 
 #Save plots
 #saveRDS(H3_plot_list, here("figure-objects/H3_unadj_splines.RDS"))
 
 #Save plot data
-saveRDS(H3_plot_data, here("ipv-stress/figure-data/H3_unadj_spline_data.RDS"))
+saveRDS(H3_plot_data, here("figure-data/H3_unadj_spline_data.RDS"))
 
