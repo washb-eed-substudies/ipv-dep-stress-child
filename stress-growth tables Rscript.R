@@ -2,7 +2,7 @@ rm(list=ls())
 
 library('flextable')
 library('officer')
-source(here::here("0-config.R"))
+source(here::here("0-config.R")) 
 
 # load enrollment characteristics and results
 # d <- read.csv(paste0(dropboxDir, "Data/Cleaned/Audrie/bangladesh-dm-ee-stress-growth-covariates-stresslab-anthro.csv"))
