@@ -1,47 +1,52 @@
 rm(list=ls())
 
 source(here::here("0-config.R"))
-source(here::here("src/0-gam-functions.R"))
 
-d <- read.csv(paste0(dropboxDir,"Data/Cleaned/Audrie/bangladesh-dm-ee-ipv-cesd-pss-covariates-stresslab.csv"))
-
-# add wealth index
-wealth <- read.csv("C:/Users/Sophia/Downloads/WBB-asset-index.csv")
-public <- read.csv("C:/Users/Sophia/Downloads/public-ids.csv")
-
-merged <- merge(wealth, public, by.x = 'dataid', by.y = 'dataid_r')
-head(merged)
-real_ids <- merged %>% select("dataid.y", "HHwealth", "HHwealth_quart", "clusterid", "block") %>% 
-  rename(dataid = dataid.y)
-
-d <- left_join(d, real_ids, by=c('dataid', 'clusterid', 'block'))
+d <- readRDS(paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stresslab.RDS"))
 
 #Set list of adjustment variables
 #Make vectors of adjustment variable names
 Wvars<-c("sex", "birthord", "momage","momheight","momedu", 
          "hfiacat", "Ncomp", "watmin", "walls", "floor", "roof", "tr", 
-         "HHwealth_quart", "n_cattle", "n_goat", "n_chicken")
+         "HHwealth")
 
 Wvars[!(Wvars %in% colnames(d))]
 
 #Add in time varying covariates:
-Wvars2_F2<-c("agemth_ut2", "monsoon_ut2") 
-Wvars3_vital<-c("agemth_t3_vital", "monsoon_t3_vital") 
-Wvars3_salimetrics<-c("agemth_t3_salimetrics", "monsoon_t3_salimetrics") 
-Wvars3_oragene<-c("agemth_t3_oragene", "monsoon_t3_oragene") 
+Wvars_mhle_t3<-c("mhle_month_t3")
+Wvars_cesd_t2<-c("cesd_month_t2")
+Wvars_pss_dad_t3<-c("pss_dad_month_t3")
 
-W2_F2_total <- c(Wvars, Wvars2_F2) %>% unique(.)
-W3_vital_total <- c(Wvars, Wvars3_vital) %>% unique(.)
-W3_salimetrics_total <- c(Wvars, Wvars3_salimetrics) %>% unique(.)
-W3_oragene_total <- c(Wvars, Wvars3_oragene) %>% unique(.)
+Wvars2_F2<-c("ageday_ut2", "month_ut2") 
+Wvars3_vital<-c("ageday_t3_vital", "month_vt3") 
+Wvars3_salimetrics<-c("ageday_t3_salimetrics", "month_lt3", "t3_col_time_z01_cont") 
+Wvars3_oragene<-c("ageday_t3_oragene", "month_ot3") 
+
+#maternal covariates
+W_t3mat_F2 <- c(Wvars, Wvars2_F2, Wvars_mhle_t3) %>% unique(.)
+W_t3mat_vitals <- c(Wvars, Wvars3_vital, Wvars_mhle_t3) %>% unique(.)
+W_t3mat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_mhle_t3) %>% unique(.)
+W_t3mat_oragene <- c(Wvars, Wvars3_oragene, Wvars_mhle_t3) %>% unique(.)
+
+W_t2mat_F2 <- c(Wvars, Wvars2_F2, Wvars_cesd_t2) %>% unique(.)
+W_t2mat_vitals <- c(Wvars, Wvars3_vital, Wvars_cesd_t2) %>% unique(.)
+W_t2mat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_cesd_t2) %>% unique(.)
+W_t2mat_oragene <- c(Wvars, Wvars3_oragene, Wvars_cesd_t2) %>% unique(.)
+
+#paternal covariates
+W_t3pat_F2 <- c(Wvars, Wvars2_F2, Wvars_pss_dad_t3) %>% unique(.)
+W_t3pat_vitals <- c(Wvars, Wvars3_vital, Wvars_pss_dad_t3) %>% unique(.)
+W_t3pat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_pss_dad_t3) %>% unique(.)
+W_t3pat_oragene <- c(Wvars, Wvars3_oragene, Wvars_pss_dad_t3) %>% unique(.)
+
 
 
 #Loop over exposure-outcome pairs
-pick_covariates <- function(j){
-  if(grepl("t2_f2", j)){Wset = W2_F2_total}
-  if(grepl("t3_gcr", j)){Wset = W3_oragene_total}
-  if(grepl("map|hr", j)){Wset = W3_vital_total}
-  if(grepl("saa|cort", j)){Wset = W3_salimetrics_total}
+pick_covariates_H1 <- function(j){
+  if(grepl("t2_f2", j)){Wset = W_t3mat_F2}
+  if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
+  if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
+  if(grepl("saa|cort", j)){Wset = W_t3mat_salimetrics}
   return(Wset)
 }
 
@@ -60,7 +65,7 @@ for(i in Xvars){
   for(j in Yvars){
     print(i)
     print(j)
-    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates(j))
+    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates_H1(j))
     res <- data.frame(X=i, Y=j, fit=I(list(res_adj$fit)), dat=I(list(res_adj$dat)))
     H1_adj_models <- bind_rows(H1_adj_models, res)
   }
@@ -71,7 +76,7 @@ for(i in Xvars){
 H1_adj_res <- NULL
 for(i in 1:nrow(H1_adj_models)){
   res <- data.frame(X=H1_adj_models$X[i], Y=H1_adj_models$Y[i])
-  preds <- predict_gam_diff(fit=H1_adj_models$fit[i][[1]], d=H1_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
+  preds <- predict_gam_diff(fit=H1_adj_models$fit[i][[1]], d=H1_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y, binaryX=T)
   H1_adj_res <-  bind_rows(H1_adj_res , preds$res)
 }
 
@@ -103,6 +108,19 @@ saveRDS(H1_adj_plot_data, here("figure-data/H1_adj_spline_data.RDS"))
 
 
 #### Hypothesis 2 ####
+pick_covariates_H2 <- function(i, j){
+  if(grepl("mom", i)){
+    if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
+    if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
+    if(grepl("saa|cort", j)){Wset = W_t3mat_salimetrics}
+  }else{
+    if(grepl("t3_gcr", j)){Wset = W_t3pat_oragene}
+    if(grepl("map|hr", j)){Wset = W_t3pat_vitals}
+    if(grepl("saa|cort", j)){Wset = W_t3pat_salimetrics}
+  }
+  return(Wset)
+}
+
 Xvars <- c("pss_sum_mom_t3", "pss_sum_dad_t3")            
 Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
@@ -115,7 +133,7 @@ for(i in Xvars){
   for(j in Yvars){
     print(i)
     print(j)
-    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates(j))
+    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates_H2(i, j))
     res <- data.frame(X=i, Y=j, fit=I(list(res_adj$fit)), dat=I(list(res_adj$dat)))
     H2_adj_models <- bind_rows(H2_adj_models, res)
   }
@@ -157,7 +175,21 @@ saveRDS(H2_adj_plot_data, here("figure-data/H2_adj_splint_data.RDS"))
 
 
 #### Hypothesis 3 ####
-Xvars <- c("cesd_sum_t2")            
+pick_covariates_H3 <- function(i, j){
+  if(grepl("t2", i)){
+    if(grepl("t2_f2", j)){Wset = W_t2mat_F2}
+    if(grepl("t3_gcr", j)){Wset = W_t2mat_oragene}
+    if(grepl("map|hr", j)){Wset = W_t2mat_vitals}
+    if(grepl("saa|cort", j)){Wset = W_t2mat_salimetrics}
+  }else{
+    if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
+    if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
+    if(grepl("saa|cort", j)){Wset = W_t3mat_salimetrics}
+  }
+  return(Wset)
+}
+
+Xvars <- c("cesd_sum_t2", "cesd_sum_t2_binary")            
 Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
            "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
@@ -170,13 +202,13 @@ for(i in Xvars){
   for(j in Yvars){
     print(i)
     print(j)
-    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates(j))
+    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates_H3(i, j))
     res <- data.frame(X=i, Y=j, fit=I(list(res_adj$fit)), dat=I(list(res_adj$dat)))
     H3_adj_models <- bind_rows(H3_adj_models, res)
   }
 }
 
-Xvars <- c("cesd_sum_ee_t3")            
+Xvars <- c("cesd_sum_ee_t3", "cesd_sum_ee_t3_binary")            
 Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
            "t3_map", "t3_hr_mean", 
@@ -186,7 +218,7 @@ for(i in Xvars){
   for(j in Yvars){
     print(i)
     print(j)
-    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates(j))
+    res_adj <- fit_RE_gam(d=d, X=i, Y=j,  W=pick_covariates_H3(i, j))
     res <- data.frame(X=i, Y=j, fit=I(list(res_adj$fit)), dat=I(list(res_adj$dat)))
     H3_adj_models <- bind_rows(H3_adj_models, res)
   }
@@ -197,7 +229,11 @@ for(i in Xvars){
 H3_adj_res <- NULL
 for(i in 1:nrow(H3_adj_models)){
   res <- data.frame(X=H3_adj_models$X[i], Y=H3_adj_models$Y[i])
-  preds <- predict_gam_diff(fit=H3_adj_models$fit[i][[1]], d=H3_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
+  if(grepl("binary", H3_adj_models$X[i])){
+    preds <- predict_gam_diff(fit=H3_adj_models$fit[i][[1]], d=H3_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y, binaryX=T)
+  }else{
+    preds <- predict_gam_diff(fit=H3_adj_models$fit[i][[1]], d=H3_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
+  }
   H3_adj_res <-  bind_rows(H3_adj_res , preds$res)
 }
 

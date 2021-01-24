@@ -1,15 +1,14 @@
 rm(list=ls())
 
 source(here::here("0-config.R"))
-source(here::here("src/0-gam-functions.R"))
 
-d <- read.csv(paste0(dropboxDir,"Data/Cleaned/Audrie/bangladesh-dm-ee-ipv-cesd-pss-covariates-stresslab.csv"))
+d <- readRDS(paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stresslab.RDS"))
 names(d)
 
 #Loop over exposure-outcome pairs
 
 #### Hypothesis 1a ####
-# Maternal exposure to cumulative lifetime IPV measured at Year 2 is negatively associated with child telomere length measured at Year 2
+# Maternal exposure to cumulative lifetime IPV measured at Year 2 is associated with child stress biomarkers
 Xvars <- c("life_viol_any_t3")            
 Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
            "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
@@ -30,7 +29,7 @@ for(i in Xvars){
 H1_res <- NULL
 for(i in 1:nrow(H1_models)){
   res <- data.frame(X=H1_models$X[i], Y=H1_models$Y[i])
-  preds <- predict_gam_diff(fit=H1_models$fit[i][[1]], d=H1_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
+  preds <- predict_gam_diff(fit=H1_models$fit[i][[1]], d=H1_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y, binaryX=T)
   H1_res <-  bind_rows(H1_res , preds$res)
 }
 
@@ -61,7 +60,7 @@ saveRDS(H1_plot_data, here("figure-data/H1_unadj_spline_data.RDS"))
 
 
 #### Hypothesis 2 ####
-#Maternal depression measured at Years 1 and 2 is negatively associated with concurrent child telomere length at Years 1 and 2
+#Parental perceived stress at Year 2 is associated with child stress biomarkers. 
 Xvars <- c("pss_sum_mom_t3", "pss_sum_dad_t3")            
 Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
@@ -113,8 +112,8 @@ saveRDS(H2_plot_data, here("figure-data/H2_unadj_spline_data.RDS"))
 
 
 #### Hypothesis 3 ####
-#Parental stress measured at Year 2 is negatively associated with child telomere length measured at Year 2. 
-Xvars <- c("cesd_sum_t2")            
+#Maternal depression at Years 1 and 2, is associated with child stress biomarkers. 
+Xvars <- c("cesd_sum_t2", "cesd_sum_t2_binary")            
 Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
            "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
@@ -131,7 +130,7 @@ for(i in Xvars){
   }
 }
 
-Xvars <- c("cesd_sum_ee_t3")            
+Xvars <- c("cesd_sum_ee_t3", "cesd_sum_ee_t3_binary")            
 Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
            "t3_map", "t3_hr_mean", 
@@ -149,7 +148,11 @@ for(i in Xvars){
 H3_res <- NULL
 for(i in 1:nrow(H3_models)){
   res <- data.frame(X=H3_models$X[i], Y=H3_models$Y[i])
-  preds <- predict_gam_diff(fit=H3_models$fit[i][[1]], d=H3_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
+  if(grepl("binary", H3_models$X[i])){
+    preds <- predict_gam_diff(fit=H3_models$fit[i][[1]], d=H3_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y, binaryX=T)
+  }else{
+    preds <- predict_gam_diff(fit=H3_models$fit[i][[1]], d=H3_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
+  }
   H3_res <-  bind_rows(H3_res , preds$res)
 }
 
