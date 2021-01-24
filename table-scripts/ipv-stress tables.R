@@ -35,6 +35,7 @@ growth_tbl <- function(name, expo_var, out_var, exposure, outcome, results, resu
   tbl <- rbind(tbl, list(" ", " ", " ", " ", " ", 
                          "Predicted Outcome at 25th Percentile", "Predicted Outcome at 75th Percentile", "Coefficient (95% CI)", "P-value", 
                          "Predicted Outcome at 25th Percentile", "Predicted Outcome at 75th Percentile", "Coefficient (95% CI)", "P-value"))
+  skipped<-F
   for (i in 1:length(exposure)) {
     for (j in 1:length(outcome)) {
       exp <- exposure[i]
@@ -43,10 +44,15 @@ growth_tbl <- function(name, expo_var, out_var, exposure, outcome, results, resu
       filtered_adj <- results_adj[results_adj$Y==out & results_adj$X==exp,]
       unadj <- paste(round(filtered_res$`point.diff`, 2), " (", round(filtered_res$`lb.diff`, 2), ", ", round(filtered_res$`ub.diff`, 2), ")", sep="")
       adj <- paste(round(filtered_adj$`point.diff`, 2), " (", round(filtered_adj$`lb.diff`, 2), ", ", round(filtered_adj$`ub.diff`, 2), ")", sep="")
-      if (j==1){
+      if (nrow(filtered_res)==0){
+        skipped<-T
+        next
+      }
+      if(j==1|skipped==T){
         tbl <- rbind(tbl, list(expo_var[i], out_var[j], filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
                                round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
                                round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
+        skipped<-F
       }else {
         tbl <- rbind(tbl, list("", out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
                                round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
@@ -82,7 +88,11 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
       filtered_adj <- results_adj[results_adj$Y==out & results_adj$X==exp,]
       unadj <- paste(round(filtered_res$`point.diff`, 2), " (", round(filtered_res$`lb.diff`, 2), ", ", round(filtered_res$`ub.diff`, 2), ")", sep="")
       adj <- paste(round(filtered_adj$`point.diff`, 2), " (", round(filtered_adj$`lb.diff`, 2), ", ", round(filtered_adj$`ub.diff`, 2), ")", sep="")
-      if (j==1){
+      if (nrow(filtered_res)==0){
+        skipped<-T
+        next
+      }
+      if(j==1|skipped==T){
         tbl <- rbind(tbl, list(expo_var[i], out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
                                round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
                                round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
@@ -123,52 +133,52 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
 #### MAIN TABLES ####
 #### Table 1 ####
 # Characteristics of participants
-nperc <- function(vector){
-  n <- sum(vector==1, na.rm=T)
-  perc <- round(n/sum(!is.na(vector))*100)
-  paste(n, " (", perc, "%)", sep="")
-}
-
-mediqr <- function(vector){
-  quantiles <- round(quantile(vector, na.rm=T), 2)
-  paste(quantiles[3], " (", quantiles[2], ", ", quantiles[4], ")", sep="")
-}
-
-n_med_col <- c(nperc(d$sex), mediqr(d$t2_f2_8ip), mediqr(d$t2_f2_23d), mediqr(d$t2_f2_VI), mediqr(d$t2_f2_12i),
-               mediqr(d$t3_cort_slope), mediqr(d$t3_residual_cort), mediqr(d$t3_saa_slope), mediqr(d$t3_residual_saa),
-               mediqr(d$t3_map), mediqr(d$t3_hr_mean), mediqr(d$t3_gcr_mean), mediqr(d$t3_gcr_cpg12),
-               mediqr(d$laz_t2), mediqr(d$waz_t2), mediqr(d$whz_t2), mediqr(d$hcz_t2),
-               mediqr(d$laz_t3), mediqr(d$waz_t3), mediqr(d$whz_t3), mediqr(d$hcz_t3),
-               nperc(d$diar7d_t2), nperc(d$diar7d_t3), mediqr(d$momage), mediqr(d$momheight), 
-               mediqr(d$momeduy), mediqr(d$cesd_sum_t2), mediqr(d$cesd_sum_ee_t3), mediqr(d$pss_sum_mom_t3), 
-               nperc(d$life_viol_any_t3))
-
-tbl1 <- data.table("C1" = c("Child","","","","","","","","","","","","","","","","","","","","","","","Mother","","","","","",""),
-                   "C2" = c("", "Urinary F2-isoprostanes (Year 1)","","","", "Salivary cortisol reactivity (Year 2)","", "sAA reactivity (Year 2)","",
-                           "SAM biomarkers (Year 2)","", "Glucocorticoid receptor","", "Anthropometry (14 months, Year 1)","","","",
-                           "Anthropometry (28 months, Year 2)","","","", "Diarrhea (14 months, Year 1)", "Diarrhea (28 months, Year 2)","",
-                           "Anthropometry at enrollment", "Education", "Depression at Year 1", "Depression at Year 2", "Perceived stress at Year 2", 
-                           "Intimate partner violence"),
-                   "C3" = c("Female", "iPF(2a)-III", "2,3-dinor-iPF(2a)-III", "iPF(2a-VI", "8,12-iso-iPF(2a)-VI", 
-                           "Change in slope between pre- and post-stressor cortisol", "Cortisol residualized gain score", 
-                           "Change in slope between pre- and post-stressor sAA change", "sAA residualized gain score",
-                           "Mean arterial pressure", "Resting heart rate", "NR3C1 exon 1F promoter methylation", "NGFI-A transcription factor binding site methylation",
-                           "Length-for-age Z score", "Weight-for-age Z score", "Weight-for-length Z score", "Head circumference-for-age Z score",
-                           "Length-for-age Z score", "Weight-for-age Z score", "Weight-for-length Z score", "Head circumference-for-age Z score",
-                           "Caregiver-reported 7-day recall", "Caregiver-reported 7-day recall", "Age (years)", "Height (cm)", "Schooling completed (years)",
-                           "CES-D score", "CES-D score", "Perceived Stress Scale score", "Any lifetime exposure"),
-                   "C4" = n_med_col)
-
-tbl1flex <- flextable(tbl1, col_keys=names(tbl1))
-tbl1flex <- set_header_labels(tbl1flex,
-                        values = list("C1" = "", "C2" = "", "C3" = "", "C4" = "n (%) or median (IQR)"))
-tbl1flex <- hline_top(tbl1flex, part="header", border=fp_border(color="black", width = 1))
-tbl1flex <- hline_bottom(tbl1flex, part="all", border=fp_border(color="black", width = 1))
-tbl1flex <- autofit(tbl1flex, part = "all")
-tbl1flex <- align(tbl1flex, j = c(1, 2, 3), align = "left", part="all")
-tbl1flex <- align(tbl1flex, j = 4, align = "center", part="all")
-tbl1flex <- fit_to_width(tbl1flex, max_width=8)
-names(tbl1)<- c("","","","n (%) or median (IQR)")
+# nperc <- function(vector){
+#   n <- sum(vector==1, na.rm=T)
+#   perc <- round(n/sum(!is.na(vector))*100)
+#   paste(n, " (", perc, "%)", sep="")
+# }
+# 
+# mediqr <- function(vector){
+#   quantiles <- round(quantile(vector, na.rm=T), 2)
+#   paste(quantiles[3], " (", quantiles[2], ", ", quantiles[4], ")", sep="")
+# }
+# 
+# n_med_col <- c(nperc(d$sex), mediqr(d$t2_f2_8ip), mediqr(d$t2_f2_23d), mediqr(d$t2_f2_VI), mediqr(d$t2_f2_12i),
+#                mediqr(d$t3_cort_slope), mediqr(d$t3_residual_cort), mediqr(d$t3_saa_slope), mediqr(d$t3_residual_saa),
+#                mediqr(d$t3_map), mediqr(d$t3_hr_mean), mediqr(d$t3_gcr_mean), mediqr(d$t3_gcr_cpg12),
+#                mediqr(d$laz_t2), mediqr(d$waz_t2), mediqr(d$whz_t2), mediqr(d$hcz_t2),
+#                mediqr(d$laz_t3), mediqr(d$waz_t3), mediqr(d$whz_t3), mediqr(d$hcz_t3),
+#                nperc(d$diar7d_t2), nperc(d$diar7d_t3), mediqr(d$momage), mediqr(d$momheight), 
+#                mediqr(d$momeduy), mediqr(d$cesd_sum_t2), mediqr(d$cesd_sum_ee_t3), mediqr(d$pss_sum_mom_t3), 
+#                nperc(d$life_viol_any_t3))
+# 
+# tbl1 <- data.table("C1" = c("Child","","","","","","","","","","","","","","","","","","","","","","","Mother","","","","","",""),
+#                    "C2" = c("", "Urinary F2-isoprostanes (Year 1)","","","", "Salivary cortisol reactivity (Year 2)","", "sAA reactivity (Year 2)","",
+#                            "SAM biomarkers (Year 2)","", "Glucocorticoid receptor","", "Anthropometry (14 months, Year 1)","","","",
+#                            "Anthropometry (28 months, Year 2)","","","", "Diarrhea (14 months, Year 1)", "Diarrhea (28 months, Year 2)","",
+#                            "Anthropometry at enrollment", "Education", "Depression at Year 1", "Depression at Year 2", "Perceived stress at Year 2", 
+#                            "Intimate partner violence"),
+#                    "C3" = c("Female", "iPF(2a)-III", "2,3-dinor-iPF(2a)-III", "iPF(2a-VI", "8,12-iso-iPF(2a)-VI", 
+#                            "Change in slope between pre- and post-stressor cortisol", "Cortisol residualized gain score", 
+#                            "Change in slope between pre- and post-stressor sAA change", "sAA residualized gain score",
+#                            "Mean arterial pressure", "Resting heart rate", "NR3C1 exon 1F promoter methylation", "NGFI-A transcription factor binding site methylation",
+#                            "Length-for-age Z score", "Weight-for-age Z score", "Weight-for-length Z score", "Head circumference-for-age Z score",
+#                            "Length-for-age Z score", "Weight-for-age Z score", "Weight-for-length Z score", "Head circumference-for-age Z score",
+#                            "Caregiver-reported 7-day recall", "Caregiver-reported 7-day recall", "Age (years)", "Height (cm)", "Schooling completed (years)",
+#                            "CES-D score", "CES-D score", "Perceived Stress Scale score", "Any lifetime exposure"),
+#                    "C4" = n_med_col)
+# 
+# tbl1flex <- flextable(tbl1, col_keys=names(tbl1))
+# tbl1flex <- set_header_labels(tbl1flex,
+#                         values = list("C1" = "", "C2" = "", "C3" = "", "C4" = "n (%) or median (IQR)"))
+# tbl1flex <- hline_top(tbl1flex, part="header", border=fp_border(color="black", width = 1))
+# tbl1flex <- hline_bottom(tbl1flex, part="all", border=fp_border(color="black", width = 1))
+# tbl1flex <- autofit(tbl1flex, part = "all")
+# tbl1flex <- align(tbl1flex, j = c(1, 2, 3), align = "left", part="all")
+# tbl1flex <- align(tbl1flex, j = 4, align = "center", part="all")
+# tbl1flex <- fit_to_width(tbl1flex, max_width=8)
+# names(tbl1)<- c("","","","n (%) or median (IQR)")
 
 
 #### Table 2 #### HYPOTHESIS 1 
