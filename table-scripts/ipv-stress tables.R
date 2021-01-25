@@ -80,6 +80,7 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
   
   # build table
   tbl <- data.table(matrix(nrow=0, ncol=13))
+  skipped<-F
   for (i in 1:length(exposure)) {
     for (j in 1:length(outcome)) {
       exp <- exposure[i]
@@ -96,6 +97,7 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
         tbl <- rbind(tbl, list(expo_var[i], out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
                                round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
                                round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
+        skipped=F
       }else {
         tbl <- rbind(tbl, list(" ", out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
                                round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
