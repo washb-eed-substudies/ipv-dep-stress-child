@@ -11,8 +11,8 @@ names(d)
 # Maternal exposure to cumulative lifetime IPV measured at Year 2 is associated with child stress biomarkers
 Xvars <- c("life_viol_any_t3")            
 Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
-           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12") 
 
 #Fit models
@@ -62,8 +62,8 @@ saveRDS(H1_plot_data, here("figure-data/H1_unadj_spline_data.RDS"))
 #### Hypothesis 2 ####
 #Parental perceived stress at Year 2 is associated with child stress biomarkers. 
 Xvars <- c("pss_sum_mom_t3", "pss_sum_dad_t3")            
-Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", 
            "t3_gcr_mean", "t3_gcr_cpg12") 
 
@@ -115,8 +115,8 @@ saveRDS(H2_plot_data, here("figure-data/H2_unadj_spline_data.RDS"))
 #Maternal depression at Years 1 and 2, is associated with child stress biomarkers. 
 Xvars <- c("cesd_sum_t2", "cesd_sum_t2_binary")            
 Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
-           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", 
            "t3_gcr_mean", "t3_gcr_cpg12") 
 

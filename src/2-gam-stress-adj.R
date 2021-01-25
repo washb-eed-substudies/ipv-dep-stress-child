@@ -19,7 +19,7 @@ Wvars_pss_dad_t3<-c("pss_dad_month_t3")
 
 Wvars2_F2<-c("ageday_ut2", "month_ut2") 
 Wvars3_vital<-c("ageday_t3_vital", "month_vt3") 
-Wvars3_salimetrics<-c("ageday_t3_salimetrics", "month_lt3", "t3_col_time_z01_cont") 
+Wvars3_salimetrics<-c("ageday_t3_salimetrics", "month_lt3") 
 Wvars3_oragene<-c("ageday_t3_oragene", "month_ot3") 
 
 #maternal covariates
@@ -46,7 +46,10 @@ pick_covariates_H1 <- function(j){
   if(grepl("t2_f2", j)){Wset = W_t3mat_F2}
   if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
   if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
-  if(grepl("saa|cort", j)){Wset = W_t3mat_salimetrics}
+  if(grepl("saa|cort", j)){
+    if(grepl("residual", j)){Wset = W_t3mat_salimetrics}
+    else{Wset = c(W_t3mat_salimetrics, "t3_col_time_z01_cont")}
+  }
   return(Wset)
 }
 
@@ -54,8 +57,8 @@ pick_covariates_H1 <- function(j){
 # Maternal exposure to cumulative lifetime IPV measured at Year 2 is negatively associated with child telomere length measured at Year 2
 Xvars <- c("life_viol_any_t3")            
 Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
-           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa", 
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12") 
 
 
@@ -112,18 +115,24 @@ pick_covariates_H2 <- function(i, j){
   if(grepl("mom", i)){
     if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
     if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
-    if(grepl("saa|cort", j)){Wset = W_t3mat_salimetrics}
+    if(grepl("saa|cort", j)){
+      if(grepl("residual", j)){Wset = W_t3mat_salimetrics}
+      else{Wset = c(W_t3mat_salimetrics, "t3_col_time_z01_cont")}
+    }
   }else{
     if(grepl("t3_gcr", j)){Wset = W_t3pat_oragene}
     if(grepl("map|hr", j)){Wset = W_t3pat_vitals}
-    if(grepl("saa|cort", j)){Wset = W_t3pat_salimetrics}
+    if(grepl("saa|cort", j)){
+      if(grepl("residual", j)){Wset = W_t3pat_salimetrics}
+      else{Wset = c(W_t3pat_salimetrics, "t3_col_time_z01_cont")}
+    }
   }
   return(Wset)
 }
 
 Xvars <- c("pss_sum_mom_t3", "pss_sum_dad_t3")            
-Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", 
            "t3_gcr_mean", "t3_gcr_cpg12") 
 
@@ -180,19 +189,25 @@ pick_covariates_H3 <- function(i, j){
     if(grepl("t2_f2", j)){Wset = W_t2mat_F2}
     if(grepl("t3_gcr", j)){Wset = W_t2mat_oragene}
     if(grepl("map|hr", j)){Wset = W_t2mat_vitals}
-    if(grepl("saa|cort", j)){Wset = W_t2mat_salimetrics}
+    if(grepl("saa|cort", j)){
+      if(grepl("residual", j)){Wset = W_t2mat_salimetrics}
+      else{Wset = c(W_t2mat_salimetrics, "t3_col_time_z01_cont")}
+    }
   }else{
     if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
     if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
-    if(grepl("saa|cort", j)){Wset = W_t3mat_salimetrics}
+    if(grepl("saa|cort", j)){
+      if(grepl("residual", j)){Wset = W_t3mat_salimetrics}
+      else{Wset = c(W_t3mat_salimetrics, "t3_col_time_z01_cont")}
+    }
   }
   return(Wset)
 }
 
 Xvars <- c("cesd_sum_t2", "cesd_sum_t2_binary")            
-Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
-           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", 
+           "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", 
            "t3_gcr_mean", "t3_gcr_cpg12") 
 
@@ -209,8 +224,8 @@ for(i in Xvars){
 }
 
 Xvars <- c("cesd_sum_ee_t3", "cesd_sum_ee_t3_binary")            
-Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02",
-           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03",
+Yvars <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
+           "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", 
            "t3_gcr_mean", "t3_gcr_cpg12") 
 
