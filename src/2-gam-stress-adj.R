@@ -7,7 +7,7 @@ d <- readRDS(paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stre
 #Set list of adjustment variables
 #Make vectors of adjustment variable names
 Wvars<-c("sex", "birthord", "momage","momheight","momedu", 
-         "hfiacat", "Ncomp", "watmin", "walls", "floor", "roof", "tr", 
+         "hfiacat", "Ncomp", "watmin", "walls", "floor", "tr", 
          "HHwealth")
 
 Wvars[!(Wvars %in% colnames(d))]
@@ -23,7 +23,6 @@ Wvars3_salimetrics<-c("ageday_t3_salimetrics", "month_lt3")
 Wvars3_oragene<-c("ageday_t3_oragene", "month_ot3") 
 
 #maternal covariates
-W_t3mat_F2 <- c(Wvars, Wvars2_F2, Wvars_mhle_t3) %>% unique(.)
 W_t3mat_vitals <- c(Wvars, Wvars3_vital, Wvars_mhle_t3) %>% unique(.)
 W_t3mat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_mhle_t3) %>% unique(.)
 W_t3mat_oragene <- c(Wvars, Wvars3_oragene, Wvars_mhle_t3) %>% unique(.)
@@ -34,7 +33,6 @@ W_t2mat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_cesd_t2) %>% unique(.)
 W_t2mat_oragene <- c(Wvars, Wvars3_oragene, Wvars_cesd_t2) %>% unique(.)
 
 #paternal covariates
-W_t3pat_F2 <- c(Wvars, Wvars2_F2, Wvars_pss_dad_t3) %>% unique(.)
 W_t3pat_vitals <- c(Wvars, Wvars3_vital, Wvars_pss_dad_t3) %>% unique(.)
 W_t3pat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_pss_dad_t3) %>% unique(.)
 W_t3pat_oragene <- c(Wvars, Wvars3_oragene, Wvars_pss_dad_t3) %>% unique(.)
@@ -43,7 +41,7 @@ W_t3pat_oragene <- c(Wvars, Wvars3_oragene, Wvars_pss_dad_t3) %>% unique(.)
 
 #Loop over exposure-outcome pairs
 pick_covariates_H1 <- function(j){
-  if(grepl("t2_f2", j)){Wset = W_t3mat_F2}
+  if(grepl("t2_", j)){Wset = W_t3mat_F2}
   if(grepl("t3_gcr", j)){Wset = W_t3mat_oragene}
   if(grepl("map|hr", j)){Wset = W_t3mat_vitals}
   if(grepl("saa|cort", j)){
@@ -56,7 +54,7 @@ pick_covariates_H1 <- function(j){
 #### Hypothesis 1 ####
 # Maternal exposure to cumulative lifetime IPV measured at Year 2 is negatively associated with child telomere length measured at Year 2
 Xvars <- c("life_viol_any_t3")            
-Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i",
+Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca",
            "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa", 
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12") 
@@ -186,7 +184,7 @@ saveRDS(H2_adj_plot_data, here("figure-data/H2_adj_splint_data.RDS"))
 #### Hypothesis 3 ####
 pick_covariates_H3 <- function(i, j){
   if(grepl("t2", i)){
-    if(grepl("t2_f2", j)){Wset = W_t2mat_F2}
+    if(grepl("t2_", j)){Wset = W_t2mat_F2}
     if(grepl("t3_gcr", j)){Wset = W_t2mat_oragene}
     if(grepl("map|hr", j)){Wset = W_t2mat_vitals}
     if(grepl("saa|cort", j)){
@@ -205,7 +203,7 @@ pick_covariates_H3 <- function(i, j){
 }
 
 Xvars <- c("cesd_sum_t2", "cesd_sum_t2_binary")            
-Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", 
+Yvars <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca",
            "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_residual_saa",
            "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_residual_cort",
            "t3_map", "t3_hr_mean", 
