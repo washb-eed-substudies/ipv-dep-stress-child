@@ -23,6 +23,7 @@ Wvars3_salimetrics<-c("ageday_t3_salimetrics", "month_lt3")
 Wvars3_oragene<-c("ageday_t3_oragene", "month_ot3") 
 
 #maternal covariates
+W_t3mat_F2 <- c(Wvars, Wvars2_F2, Wvars_mhle_t3) %>% unique(.)
 W_t3mat_vitals <- c(Wvars, Wvars3_vital, Wvars_mhle_t3) %>% unique(.)
 W_t3mat_salimetrics <- c(Wvars, Wvars3_salimetrics, Wvars_mhle_t3) %>% unique(.)
 W_t3mat_oragene <- c(Wvars, Wvars3_oragene, Wvars_mhle_t3) %>% unique(.)

@@ -166,7 +166,17 @@ mean(W$roof, na.rm=T)
 sd(W$roof, na.rm=T)
 # remove roof from covariates
 
-
-
+#Z-score momheight and turn into a factor variable to avoid dropping
+#observations and to avoid sparse categories
+dfull <- dfull %>%
+  mutate(momheight = scale(momheight, center = TRUE, scale = TRUE),
+         momheight = cut(momheight, 
+                         c(min(momheight, na.rm = T), -2, -1, 0, 1, 2, max(momheight, na.rm = T)),
+                         right = FALSE,
+                         include.lowest = TRUE))
+summary(dfull$momheight)
+dfull$momheight<-addNA(dfull$momheight)
+levels(dfull$momheight)[length(levels(dfull$momheight))]<-"Missing"
+summary(dfull$momheight)
 
 saveRDS(dfull, paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stresslab.RDS"))
