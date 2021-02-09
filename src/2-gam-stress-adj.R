@@ -79,8 +79,15 @@ H1_adj_res <- NULL
 for(i in 1:nrow(H1_adj_models)){
   res <- data.frame(X=H1_adj_models$X[i], Y=H1_adj_models$Y[i])
   preds <- predict_gam_diff(fit=H1_adj_models$fit[i][[1]], d=H1_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y, binaryX=T)
+  if (grepl("t2", res$Y)) {
+    preds$res$time <- "t2"
+  } else {
+    preds$res$time <- "t3"
+  }
   H1_adj_res <-  bind_rows(H1_adj_res , preds$res)
 }
+H1_adj_res$H <- 1
+
 
 #Make list of plots
 H1_adj_plot_list <- NULL
@@ -154,6 +161,8 @@ for(i in 1:nrow(H2_adj_models)){
   preds <- predict_gam_diff(fit=H2_adj_models$fit[i][[1]], d=H2_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
   H2_adj_res <-  bind_rows(H2_adj_res , preds$res)
 }
+H2_adj_res$H <- 2
+H2_adj_res$time <- "t3C"
 
 #Make list of plots
 H2_adj_plot_list <- NULL
@@ -248,8 +257,16 @@ for(i in 1:nrow(H3_adj_models)){
   }else{
     preds <- predict_gam_diff(fit=H3_adj_models$fit[i][[1]], d=H3_adj_models$dat[i][[1]], quantile_diff=c(0.25,0.75), Xvar=res$X, Yvar=res$Y)
   }
+  if(grepl("t2", res$Y)){
+    preds$res$time <- "t2"
+  }else{
+    if(grepl("t3", res$X)){
+      preds$res$time <- "t3C"
+    }else{preds$res$time <- "t3S"}
+  }
   H3_adj_res <-  bind_rows(H3_adj_res , preds$res)
 }
+H3_adj_res$H <- 3
 
 #Make list of plots
 H3_adj_plot_list <- NULL
