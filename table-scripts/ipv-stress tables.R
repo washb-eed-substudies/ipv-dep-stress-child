@@ -27,12 +27,12 @@ growth_tbl <- function(name, expo_var, out_var, exposure, outcome, results, resu
   ### this function produces a table that can be saved as a csv
   
   tbl <- data.table(name = character(), "Outcome" = character(), "N" = character(), "25th Percentile" = character(), "75th Percentile" = character(),
-                    " Outcome, 75th Percentile v. 25th Percentile" = character(), " " = character(), " " = character(), " " = character(), 
-                    " " = character(), " " = character(), " " = character(), " " = character())
-  tbl <- rbind(tbl, list(" ", " ", " ", " ", " ", "Unadjusted", " ", " ", " ", "Fully adjusted", " ", " ", " "))
+                    " Outcome, 75th Percentile v. 25th Percentile" = character(), " " = character(), " " = character(), " " = character(), " " = character(),
+                    " " = character(), " " = character(), " " = character(), " " = character(), " " = character())
+  tbl <- rbind(tbl, list(" ", " ", " ", " ", " ", "Unadjusted", " ", " ", " ", " ", "Fully adjusted", " ", " ", " ", " "))
   tbl <- rbind(tbl, list(" ", " ", " ", " ", " ", 
-                         "Predicted Outcome at 25th Percentile", "Predicted Outcome at 75th Percentile", "Coefficient (95% CI)", "P-value", 
-                         "Predicted Outcome at 25th Percentile", "Predicted Outcome at 75th Percentile", "Coefficient (95% CI)", "P-value"))
+                         "Predicted Outcome at 25th Percentile", "Predicted Outcome at 75th Percentile", "Coefficient (95% CI)", "P-value", "FDR adjusted P-value", 
+                         "Predicted Outcome at 25th Percentile", "Predicted Outcome at 75th Percentile", "Coefficient (95% CI)", "P-value", "FDR adjusted P-value"))
   skipped<-F
   for (i in 1:length(exposure)) {
     for (j in 1:length(outcome)) {
@@ -48,17 +48,17 @@ growth_tbl <- function(name, expo_var, out_var, exposure, outcome, results, resu
       }
       if(j==1|skipped==T){
         tbl <- rbind(tbl, list(expo_var[i], out_var[j], filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
-                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
-                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
+                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$Pval, 2), round(filtered_res$BH.Pval, 2), 
+                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$Pval, 2), round(filtered_adj$BH.Pval, 2)))
         skipped<-F
       }else {
         tbl <- rbind(tbl, list("", out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
-                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
-                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
+                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$Pval, 2), round(filtered_res$BH.Pval, 2), 
+                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$Pval, 2), round(filtered_adj$BH.Pval, 2)))
       }
     }
     if (i != length(exposure)) {
-      tbl <- rbind(tbl, list("","","","","","","","","","","","",""))
+      tbl <- rbind(tbl, list("","","","","","","","","","","","","","",""))
     }
   }
   tbl
@@ -77,7 +77,7 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
   ### directly to a word document!
   
   # build table
-  tbl <- data.table(matrix(nrow=0, ncol=13))
+  tbl <- data.table(matrix(nrow=0, ncol=15))
   skipped<-F
   for (i in 1:length(exposure)) {
     for (j in 1:length(outcome)) {
@@ -93,17 +93,17 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
       }
       if(j==1|skipped==T){
         tbl <- rbind(tbl, list(expo_var[i], out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
-                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
-                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
+                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$Pval, 2), round(filtered_res$BH.Pval, 2), 
+                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$Pval, 2), round(filtered_adj$BH.Pval, 2)))
         skipped=F
       }else {
         tbl <- rbind(tbl, list(" ", out_var[j],  filtered_res$N, round(filtered_res$q1, 2), round(filtered_res$q3, 2), 
-                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$BH.Pval, 2), 
-                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$BH.Pval, 2)))
+                               round(filtered_res$pred.q1, 2), round(filtered_res$pred.q3, 2), unadj, round(filtered_res$Pval, 2), round(filtered_res$BH.Pval, 2), 
+                               round(filtered_adj$pred.q1, 2), round(filtered_adj$pred.q3, 2), adj, round(filtered_adj$Pval, 2), round(filtered_adj$BH.Pval, 2)))
       }
     }
     if (i != length(exposure)) {
-      tbl <- rbind(tbl, list("","","","","","","","", "","","","",""))
+      tbl <- rbind(tbl, list("","","","","","","","", "","","","","","",""))
     }
   }
   
@@ -111,11 +111,11 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
   flextbl<-flextable(tbl, col_keys=names(tbl))
   flextbl <- set_header_labels(flextbl,
                                values = list("V1" = " ", "V2" = " ", "V3" = " ", "V4" = " ", "V5" = " ",
-                                             "V6" = "Predicted Outcome at 25th Percentile", "V7" = "Predicted Outcome at 75th Percentile", "V8" = "Coefficient (95% CI)", "V9" = "P-value",
-                                             "V10" = "Predicted Outcome at 25th Percentile", "V11" = "Predicted Outcome at 75th Percentile", "V12" = "Coefficient (95% CI)", "V13" = "P-value"))
-  flextbl <- add_header_row(flextbl, values = c("","","","","", "Unadjusted", "Fully adjusted"), colwidths=c(1,1,1,1,1,4,4))
+                                             "V6" = "Predicted Outcome at 25th Percentile", "V7" = "Predicted Outcome at 75th Percentile", "V8" = "Coefficient (95% CI)", "V9" = "P-value", "V10" = "FDR Corrected P-value",
+                                             "V11" = "Predicted Outcome at 25th Percentile", "V12" = "Predicted Outcome at 75th Percentile", "V13" = "Coefficient (95% CI)", "V14" = "P-value", "V15" = "FDR Corrected P-value"))
+  flextbl <- add_header_row(flextbl, values = c("","","","","", "Unadjusted", "Fully adjusted"), colwidths=c(1,1,1,1,1,5,5))
   # flextbl <- hline_top(flextbl, part="header", border=fp_border(color="black"))
-  flextbl <- add_header_row(flextbl, values = c(name, "Outcome","N","25th Percentile","75th Percentile", "Outcome, 75th Percentile v. 25th Percentile"), colwidths=c(1,1,1,1,1,8))
+  flextbl <- add_header_row(flextbl, values = c(name, "Outcome","N","25th Percentile","75th Percentile", "Outcome, 75th Percentile v. 25th Percentile"), colwidths=c(1,1,1,1,1,10))
   # flextbl <- hline_top(flextbl, part="header", border=fp_border(color="black"))
   flextbl <- hline(flextbl, part="header", border=fp_border(color="black"))
   flextbl <- hline_bottom(flextbl, part="body", border=fp_border(color="black"))
@@ -127,7 +127,6 @@ growth_tbl_flex <- function(name, expo_var, out_var, exposure, outcome, results,
   
   flextbl
 }
-
 
 
 #### MAIN TABLES ####
