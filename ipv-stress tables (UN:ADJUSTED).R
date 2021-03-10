@@ -1,7 +1,5 @@
 rm(list=ls())
 
-### UNADJUSTED AND ADJUSTED TABLES ###
-
 library('flextable')
 library('officer')
 library('data.table')
