@@ -83,7 +83,7 @@ tbl2flex <- growth_tbl_flex("Urinary oxidative stress biomarker", expo_var, out_
 
 exposure <- c("pss_sum_mom_t3", "pss_sum_dad_t3")
 outcome <- c("t3_saa_slope",  "t3_saa_z01", "t3_saa_z02", "t3_cort_slope","t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12" )
-expo_var <- c("Maternal Percieved Stress", "Paternal Percieved Stress")
+expo_var <- c("Maternal Perceived Stress", "Paternal Perceived Stress")
 out_var <- c("Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Perssure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
 tbl3 <- growth_tbl("Salivary stress biomarker", expo_var, out_var, exposure, outcome, H2, H2adj, T)
