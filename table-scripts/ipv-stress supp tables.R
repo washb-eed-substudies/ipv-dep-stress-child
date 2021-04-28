@@ -103,9 +103,10 @@ tbl4flex <- growth_tbl_flex("Resting SAM biomarker", expo_var, out_var, exposure
 #### SAVE TABLES #### 
 
 # write.csv(tbl1, file=here("tables/main/stress-growth-table1.csv")) --> in save_as_dox "Table 1" = tbl1flex,
-write.csv(tbl2, file("tables/main/stress-growth-table2.csv"))
-write.csv(tbl3, here('tables/main/stress-growth-table3.csv'))
-write.csv(tbl4, here('tables/main/stress-growth-table4.csv'))
+write.csv(tbl2, file("tables/supplementary/stress-growth-table2.csv"))
+write.csv(tbl3, here('tables/supplementary/stress-growth-table3.csv'))
+write.csv(tbl4, here('tables/supplementary/stress-growth-table4.csv'))
 
-save_as_docx( "Table 2" = tbl2flex, "Table 3" = tbl3flex, "Table 4" = tbl4flex, path=here("tables/main/IPV-Stress-Dep_main_tables.docx"))
+save_as_docx( "Table 2" = tbl2flex, "Table 3" = tbl3flex, "Table 4" = tbl4flex, path=here("tables/supplementary/IPV-Stress-Dep_supp_tables.docx"),
+              pr_section = sect_properties)
 
