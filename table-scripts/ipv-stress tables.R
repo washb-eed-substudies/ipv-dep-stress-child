@@ -74,7 +74,7 @@ H3adj <- readRDS(here('results/adjusted/H3_adj_res.RDS'))
 exposure <- c("life_viol_any_t3")
 outcome <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca", "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12")
 expo_var <- c("Maternal Exposure to IPV at any time")
-out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score",  "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Perssure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
+out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score",  "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
 tbl2 <- growth_tbl("Urinary oxidative stress biomarker", expo_var, out_var, exposure, outcome, H1, H1adj, T)
 tbl2flex <- growth_tbl_flex("Urinary oxidative stress biomarker", expo_var, out_var, exposure, outcome, H1, H1adj, T)
