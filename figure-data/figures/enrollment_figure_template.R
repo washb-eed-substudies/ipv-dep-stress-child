@@ -3,12 +3,14 @@ source(here::here("0-config.R"))
 library(tibble)
 data <- tibble(x = -10:100, y= -10:100)
 head(data)
+here::here()
 
-d <- readRDS("ADD FILE PATH TO YOUR DATASET HERE")
-exposures_y1 <- c("ADD ALL EXPOSURES AT YEAR 1")
-outcomes_y1 <- c("ADD ALL OUTCOMES AT YEAR 1")
-exposures_y2 <- NULL #IF EXPOSURES ARE MATERNAL PREGNANCY BIOMARKERS DO NOT USE exposures_y2 - OTHERWISE FILL IN WITH EXPOSURES AT YEAR 2
-outcomes_y2 <- c("ADD ALL OUTCOMES AT YEAR 2")
+d <- readRDS("/Users/alexissilvera/ipv-dep-stress-child")
+exposures_y1 <- c("cesd_sum_t2","cesd_sum_t2_binary")
+outcomes_y1 <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca")
+exposures_y2 <- c("cesd_sum_ee_t3", "cesd_sum_ee_t3_binary","life_viol_any_t3", "pss_sum_mom_t3", "pss_sum_dad_t3")
+outcomes_y2 <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12")
+
 
 #function for filtering for only participants with at least one outcome
 filtering <- function(row){
