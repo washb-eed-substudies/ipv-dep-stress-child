@@ -3,7 +3,7 @@ rm(list=ls())
 source(here::here("0-config.R"))
 
 
-d <- read.csv(paste0(dropboxDir,"Data/Cleaned/Audrie/bangladesh-dm-ee-ipv-cesd-pss-covariates-stresslab (1).csv"))
+d <- read.csv(paste0(dropboxDir,"Data/Cleaned/Audrie/bangladesh-dm-ee-ipv-cesd-pss-covariates-stresslab.csv"))
 
 # transform outcome distributions
 d <- d %>% 

@@ -76,36 +76,37 @@ outcome <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca", "t
 expo_var <- c("Maternal Exposure to IPV at any time")
 out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score",  "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
-tbl2 <- growth_tbl("Urinary oxidative stress biomarker", expo_var, out_var, exposure, outcome, H1, H1adj, T)
-tbl2flex <- growth_tbl_flex("Urinary oxidative stress biomarker", expo_var, out_var, exposure, outcome, H1, H1adj, T)
+tbl2 <- growth_tbl("Exposure to IPV", expo_var, out_var, exposure, outcome, H1, H1adj, T)
+tbl2flex <- growth_tbl_flex("Exposure to IPV", expo_var, out_var, exposure, outcome, H1, H1adj, T, 1.1, 1.3)
 
 #### Table 3 #### HYPOTHESIS 2: PERCEIVED STRESS ~ CHILD STRESS BIOMARKERS 
 
 exposure <- c("pss_sum_mom_t3", "pss_sum_dad_t3")
 outcome <- c("t3_saa_slope",  "t3_saa_z01", "t3_saa_z02", "t3_cort_slope","t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12" )
 expo_var <- c("Maternal Perceived Stress", "Paternal Perceived Stress")
-out_var <- c("Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Perssure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
+out_var <- c("Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
-tbl3 <- growth_tbl("Salivary stress biomarker", expo_var, out_var, exposure, outcome, H2, H2adj, T)
-tbl3flex <- growth_tbl_flex("Salivary stress biomarker", expo_var, out_var, exposure, outcome, H2, H2adj, T)
+tbl3 <- growth_tbl("Parental Stress", expo_var, out_var, exposure, outcome, H2, H2adj, T)
+tbl3flex <- growth_tbl_flex("Parental Stress", expo_var, out_var, exposure, outcome, H2, H2adj, T, 1.1, 1.6)
 
 #### Table 4 #### HYPOTHESIS 3: DEPRESSION ~ CHILD STRESS BIOMARKERS
 
 exposure <- c("cesd_sum_t2", "cesd_sum_ee_t3", "cesd_sum_t2_binary", "cesd_sum_ee_t3_binary")
 outcome <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca", "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12")
 expo_var <- c( "CES-D score at Year 1", "CES-D score at Year 2",  "Binary CES-D at Year 1", "Binary CES-D at  Year  2")
-out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score", "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Perssure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
+out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score", "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
-tbl4 <- growth_tbl("Resting SAM biomarker", expo_var, out_var, exposure, outcome, H3, H3adj, T)
-tbl4flex <- growth_tbl_flex("Resting SAM biomarker", expo_var, out_var, exposure, outcome, H3, H3adj, T)
+tbl4 <- growth_tbl("Maternal Depression", expo_var, out_var, exposure, outcome, H3, H3adj, T)
+tbl4flex <- growth_tbl_flex("Maternal Depression", expo_var, out_var, exposure, outcome, H3, H3adj, T, 1.4, 1.6)
 
 
 #### SAVE TABLES #### 
 
 # write.csv(tbl1, file=here("tables/main/stress-growth-table1.csv")) --> in save_as_dox "Table 1" = tbl1flex,
-write.csv(tbl2, file("tables/main/stress-growth-table2.csv"))
-write.csv(tbl3, here('tables/main/stress-growth-table3.csv'))
-write.csv(tbl4, here('tables/main/stress-growth-table4.csv'))
+write.csv(tbl2, file("tables/main/stress-growth-table1.csv"))
+write.csv(tbl3, here('tables/main/stress-growth-table2.csv'))
+write.csv(tbl4, here('tables/main/stress-growth-table3.csv'))
 
-save_as_docx( "Table 2" = tbl2flex, "Table 3" = tbl3flex, "Table 4" = tbl4flex, path=here("tables/main/IPV-Stress-Dep_main_tables.docx"))
+save_as_docx( "Table 1" = tbl2flex, "Table 2" = tbl3flex, "Table 3" = tbl4flex, path=here("tables/main/IPV-Stress-Dep_main_tables.docx"),
+              pr_section = sect_properties)
 
