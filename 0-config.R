@@ -33,8 +33,8 @@ if(dir.exists("C:/Users/andre/Dropbox/WASHB-EE-analysis/WBB-EE-analysis/")){
 if(dir.exists("/Users/audrielin/Dropbox/WBB-EE-analysis/")){ 
   dropboxDir <- "/Users/audrielin/Dropbox/WBB-EE-analysis/"
 }
-if(dir.exists("C:/Users/Sophia/Dropbox/WASH/")){ 
-  dropboxDir <- "C:/Users/Sophia/Dropbox/WASH/"
+if(dir.exists("/Users/sophiatan/Dropbox/WASH/")){ 
+  dropboxDir <- "/Users/sophiatan/Dropbox/WASH/"
 }
 if(dir.exists("/Users/lisa/Dropbox/WASH/")){ 
   dropboxDir <- "/Users/lisa/Dropbox/WASH/"
