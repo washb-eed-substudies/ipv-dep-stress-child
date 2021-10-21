@@ -5,14 +5,14 @@ data <- tibble(x = -10:100, y= -10:100)
 head(data)
 here::here()
 
-d <- readRDS("/Users/alexissilvera/ipv-dep-stress-child")
+d <- readRDS("/Users/alexissilvera/ipv-dep-stress-child/figure-data/figures/ipv-cesd-pss-covariates-stresslab.RDS")
 exposures_y1 <- c("cesd_sum_t2","cesd_sum_t2_binary")
 outcomes_y1 <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca")
 exposures_y2 <- c("cesd_sum_ee_t3", "cesd_sum_ee_t3_binary","life_viol_any_t3", "pss_sum_mom_t3", "pss_sum_dad_t3")
 outcomes_y2 <- c("t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12")
 
 
-#function for filtering for only participants with at least one outcome
+#function for filtering for only participants with at least one  outcome
 filtering <- function(row){
   any(!is.na(row))}
     
