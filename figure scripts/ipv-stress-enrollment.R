@@ -4,7 +4,7 @@ library(tibble)
 data <- tibble(x = -10:100, y= -10:100)
 head(data)
 
-d <- readRDS(paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stresslab.RDS"))
+d1 <- readRDS(paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stresslab.RDS"))
 exposures_y1 <- c("life_viol_any_t3", "cesd_sum_t2", "cesd_sum_t2_binary")
 outcomes_y1 <- c("t2_f2_8ip",  "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca")
 exposures_y2 <- c("pss_sum_mom_t3", "pss_sum_dad_t3", "cesd_sum_ee_t3", "cesd_sum_ee_t3_binary")

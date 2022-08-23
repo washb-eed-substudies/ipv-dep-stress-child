@@ -107,6 +107,7 @@ write.csv(tbl2, file("tables/main/stress-growth-table1.csv"))
 write.csv(tbl3, here('tables/main/stress-growth-table2.csv'))
 write.csv(tbl4, here('tables/main/stress-growth-table3.csv'))
 
-save_as_docx( "Table 1" = tbl2flex, "Table 2" = tbl3flex, "Table 3" = tbl4flex, path=here("tables/main/IPV-Stress-Dep_main_tables.docx"),
+save_as_docx( "Table 1" = tbl2flex, "Table 2" = tbl3flex, "Table 3" = tbl4flex, 
+              path=here("tables/main/IPV-Stress-Dep_main_tables082222.docx"),
               pr_section = sect_properties)
 
