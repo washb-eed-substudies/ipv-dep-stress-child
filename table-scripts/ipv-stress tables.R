@@ -48,8 +48,8 @@ H3adj <- readRDS(here('results/adjusted/H3_adj_res.RDS'))
 #                            "Anthropometry at enrollment", "Education", "Depression at Year 1", "Depression at Year 2", "Perceived stress at Year 2", 
 #                            "Intimate partner violence"),
 #                    "C3" = c("Female", "iPF(2a)-III", "2,3-dinor-iPF(2a)-III", "iPF(2a-VI", "8,12-iso-iPF(2a)-VI", 
-#                            "Change in slope between pre- and post-stressor cortisol", "Cortisol residualized gain score", 
-#                            "Change in slope between pre- and post-stressor sAA change", "sAA residualized gain score",
+#                            "Slope between pre- and post-stressor cortisol", "Cortisol residualized gain score", 
+#                            "Slope between pre- and post-stressor sAA", "sAA residualized gain score",
 #                            "Mean arterial pressure", "Resting heart rate", "NR3C1 exon 1F promoter methylation", "NGFI-A transcription factor binding site methylation",
 #                            "Length-for-age Z score", "Weight-for-age Z score", "Weight-for-length Z score", "Head circumference-for-age Z score",
 #                            "Length-for-age Z score", "Weight-for-age Z score", "Weight-for-length Z score", "Head circumference-for-age Z score",
@@ -74,7 +74,7 @@ H3adj <- readRDS(here('results/adjusted/H3_adj_res.RDS'))
 exposure <- c("life_viol_any_t3")
 outcome <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca", "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12")
 expo_var <- c("Maternal Exposure to IPV at any time")
-out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score",  "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
+out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score",  "Pre to post-stress change in sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
 tbl2 <- growth_tbl("Exposure to IPV", expo_var, out_var, exposure, outcome, H1, H1adj, T)
 tbl2flex <- growth_tbl_flex("Exposure to IPV", expo_var, out_var, exposure, outcome, H1, H1adj, T, 1.1, 1.3)
@@ -94,7 +94,7 @@ tbl3flex <- growth_tbl_flex("Parental Stress", expo_var, out_var, exposure, outc
 exposure <- c("cesd_sum_t2", "cesd_sum_ee_t3", "cesd_sum_t2_binary", "cesd_sum_ee_t3_binary")
 outcome <- c("t2_f2_8ip", "t2_f2_23d", "t2_f2_VI", "t2_f2_12i", "t2_iso_pca", "t3_saa_slope", "t3_saa_z01", "t3_saa_z02", "t3_cort_slope", "t3_cort_z01", "t3_cort_z03", "t3_map", "t3_hr_mean", "t3_gcr_mean", "t3_gcr_cpg12")
 expo_var <- c( "CES-D score at Year 1", "CES-D score at Year 2",  "Binary CES-D at Year 1", "Binary CES-D at  Year  2")
-out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score", "Pre to post-stress change in slope of sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Slope of Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
+out_var <- c("IPF(2a)-III", "2,3-dinor-iPF(a2)-III", "iPF(2a)-VI", "8,12-iso-iPF(2a)-VI", "Compiled F2-isoprostanes Score", "Pre to post-stress change in sAA", "Pre-Stressor SAA", "Post-Stressor SAA", "Change in Cortisol", "Pre-Stressor Cortisol", "Post-Stressor Cortisol", "Mean Arterial Pressure", "Resting Heart Rate", "Entire promoter region (39 assayed CpG sites)","NGFI-A transcription factor binding site (CpG site #12)")
 
 tbl4 <- growth_tbl("Maternal Depression", expo_var, out_var, exposure, outcome, H3, H3adj, T)
 tbl4flex <- growth_tbl_flex("Maternal Depression", expo_var, out_var, exposure, outcome, H3, H3adj, T, 1.4, 1.6)

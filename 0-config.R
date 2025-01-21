@@ -50,10 +50,6 @@ if(dir.exists("/Users/andre/Dropbox/WASHB-EE-analysis/WBB-EE-analysis/")){
   dropboxDir <- "/Users/andre/Dropbox/WASHB-EE-analysis/WBB-EE-analysis/"
 }
 
-library(boxr)
-box_auth()
-d <- box_read(871638120165) %>% filter(ipv_stress == 1)
-
 theme_ki<-function(){
   theme_bw() %+replace%
     theme(

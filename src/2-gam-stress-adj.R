@@ -2,7 +2,7 @@ rm(list=ls())
 
 source(here::here("0-config.R"))
 
-#d <- readRDS(paste0(dropboxDir,"Data/Cleaned/Audrie/ipv-cesd-pss-covariates-stresslab.RDS"))
+d <- readRDS("/Users/sophiatan/Downloads/bangladesh-cleaned-master-data.RDS") %>% filter(ipv_stress==1)
 
 #Set list of adjustment variables
 #Make vectors of adjustment variable names

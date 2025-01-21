@@ -7,7 +7,7 @@ library(flextable)
 library(officer)
 library(data.table)
 
-d <- readRDS("/Users/alexissilvera/Desktop/?./WASHB + RISE/IPV, Dep, Stress - Child SAP/ipv-dep-stress-child/ipv-cesd-pss-covariates-stresslab.RDS")
+d <- readRDS("/Users/sophiatan/Downloads/bangladesh-cleaned-master-data.RDS") %>% filter(ipv_stress==1)
 
 filtering <- function(row){
   any(!is.na(row))
@@ -62,7 +62,6 @@ characteristics <- function(d, child_char = NULL, child_char_names = NULL, mom_c
         perc <- round(n/sum(!is.na(d$sex))*100)
         n_med_col <- c(n_med_col, paste(n, " (", perc, "%)", sep=""))
       }else {
-        d[[var]] <- na_if(d[[var]], "Missing")
         n_med_col <- c(n_med_col, nperc(d[[var]]))
       }
     }else {
@@ -103,7 +102,7 @@ sect_properties <- prop_section(
   page_margins = page_mar(bottom=.3, top=.3, right=.3, left=.3, gutter = 0)
 )
 
-save_as_docx("Table 1" = enroll, path="/Users/alexissilvera/Desktop/WASHB + RISE/WASHB Manuscript/enrollment-demo-table.docx", pr_section = sect_properties) 
+save_as_docx("Table 1" = enroll, path="/Users/sophiatan/Documents/WASH/ipv-stressenrollment.docx", pr_section = sect_properties) 
 
 enroll
 
